@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Delete virtual network peering : vpc40-vpc{{vpcNumber}}"
+      azure_rm_virtualnetworkpeering:
+        resource_group: Shared-Service
+        virtual_network: vpc40-shared-service
+        name: "vpc40-vpc{{vpcNumber}}"
+        state: absent
+      register: peering1
+    - debug:
+        var: peering1
+    - name: "Delete virtual network peering : vpc{{vpcNumber}}-vpc40"
+      azure_rm_virtualnetworkpeering:
+        resource_group: "{{ resourceGroupName }}"
+        virtual_network: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        name: "vpc{{vpcNumber}}-vpc40"
+        state: absent
+      register: peering2
+    - debug:
+        var: peering2
+
+    

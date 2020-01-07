@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Delete a subnet : Public-{{vpcNumber}}-1"
+      azure_rm_subnet:
+        resource_group: "{{ resourceGroupName }}"
+        virtual_network_name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        name: "Public-{{vpcNumber}}-1"
+        state: absent
+      register: subnet1
+    - debug:
+        var: subnet1
+    - name: "Delete a subnet: Private-{{vpcNumber}}-2"
+      azure_rm_subnet:
+        resource_group: "{{ resourceGroupName }}"
+        virtual_network_name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        name: "Private-{{vpcNumber}}-2"
+        state: absent
+      register: subnet2
+    - debug:
+        var: subnet2
+    

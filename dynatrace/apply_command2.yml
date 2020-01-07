@@ -1,0 +1,12 @@
+---
+- hosts: [node]
+  gather_facts: no
+  tasks:
+    - name: "Install ceph plugin"
+      command: "{{ item }}"
+      with_items:
+      - sudo service oneagent stop
+      - sudo service oneagent start
+      register: response1
+    - debug:
+        var: response1.stdout

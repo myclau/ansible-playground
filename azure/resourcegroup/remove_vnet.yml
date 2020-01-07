@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Delete a virtual network : vpc{{vpcNumber}}"
+      azure_rm_virtualnetwork:
+        resource_group: "{{ resourceGroupName }}"
+        name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        state: absent
+      register: vnet1
+    - debug:
+        var: vnet1
+    

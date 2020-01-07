@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Create a virtual network : vpc{{vpcNumber}}"
+      azure_rm_virtualnetwork:
+        resource_group: "{{ resourceGroupName }}"
+        name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        address_prefixes_cidr:
+            - "10.{{vpcNumber}}.0.0/16"
+        tags:
+          environment: "{{ _environment }}"
+          owner: "{{ _owner }}"
+      register: vnet
+    - debug:
+        var: vnet
+    

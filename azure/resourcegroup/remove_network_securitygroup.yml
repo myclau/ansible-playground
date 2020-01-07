@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Remove security group : RemoteAccess"
+      azure_rm_securitygroup:
+        resource_group: "{{resourceGroupName}}"
+        name: RemoteAccess
+        state: absent
+      register: nsg1
+    - debug:
+        var: nsg1
+    - name: "Remove security group : PublicToPrivate"
+      azure_rm_securitygroup:
+        resource_group: "{{resourceGroupName}}"
+        name: PublicToPrivate
+        state: absent
+      register: nsg2
+    - debug:
+        var: nsg2

@@ -1,0 +1,77 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "create security group : RemoteAccess"
+      azure_rm_securitygroup:
+        resource_group: "{{ resourceGroupName }}"
+        name: RemoteAccess
+        purge_rules: yes
+        rules:
+            - name: AllowRemoteAccessHKOffice01
+              protocol: Tcp
+              source_address_prefix:
+                - 'xxx.xxx.xxx.xxx/32'
+              source_port_range: "*"
+              destination_address_prefix: "*"
+              destination_port_range: 
+                - '22'
+                - '3389'
+              access: Allow
+              priority: 100
+              direction: Inbound
+            - name: AllowRemoteAccessHKOffice02
+              protocol: Tcp
+              source_address_prefix:
+                - 'xxx.xxx.xxx.xx/29'
+              source_port_range: "*"
+              destination_address_prefix: "*"
+              destination_port_range: 
+                - '22'
+                - '3389'
+              access: Allow
+              priority: 101
+              direction: Inbound
+            
+        tags:
+          environment: "{{ _environment }}"
+          owner: "{{ _owner }}"
+      register: nsg1
+    - debug:
+        var: nsg1
+    - name: "Check security group : RemoteAccess"
+      azure_rm_securitygroup_facts:
+        resource_group: "{{ resourceGroupName }}"
+        name: RemoteAccess
+
+    - name: "create security group : PublicToPrivate"
+      azure_rm_securitygroup:
+        resource_group: "{{ resourceGroupName }}"
+        name: PublicToPrivate
+        purge_rules: yes
+        rules:
+            - name: AllowAccessFromPublicSubnet
+              protocol: Tcp
+              source_address_prefix:
+                - "10.{{vpcNumber}}.1.0/24"
+              source_port_range: "*"
+              destination_address_prefix: "*"
+              destination_port_range: "*"
+              access: Allow
+              priority: 100
+              direction: Inbound
+        tags:
+          environment: "{{ _environment }}"
+          owner: "{{ _owner }}"
+      register: nsg2
+    - debug:
+        var: nsg2
+    - name: "Check security group : PublicToPrivate"
+      azure_rm_securitygroup_facts:
+        resource_group: "{{ resourceGroupName }}"
+        name: PublicToPrivate
+
+
+            

@@ -1,0 +1,6 @@
+---
+resourceGroupName: "AutomationTestByAnsible"
+location: "<location>"
+_environment: "Production"
+_owner: "Matthias Lau"
+vpcNumber: "45"

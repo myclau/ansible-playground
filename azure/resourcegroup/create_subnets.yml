@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Create a subnet : Public-{{vpcNumber}}-1"
+      azure_rm_subnet:
+        resource_group: "{{ resourceGroupName }}"
+        virtual_network_name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        name: "Public-{{vpcNumber}}-1"
+        address_prefix_cidr: "10.{{vpcNumber}}.1.0/24"
+        security_group:
+          name: RemoteAccess
+          resource_group: "{{ resourceGroupName }}"
+        #route_table: route
+      register: subnet1
+    - debug:
+        var: subnet1
+    - name: "Create a subnet: Private-{{vpcNumber}}-2"
+      azure_rm_subnet:
+        resource_group: "{{ resourceGroupName }}"
+        virtual_network_name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        name: "Private-{{vpcNumber}}-2"
+        address_prefix_cidr: "10.{{vpcNumber}}.2.0/24"
+        security_group:
+          name: PublicToPrivate
+          resource_group: "{{ resourceGroupName }}"
+        #route_table: route
+      register: subnet2
+    - debug:
+        var: subnet2
+    

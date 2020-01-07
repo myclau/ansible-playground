@@ -1,0 +1,10 @@
+[node]
+xxx01.mydoamin.com ansible_host=192.168.56.11
+xxx02.mydoamin.com ansible_host=192.168.56.12
+xxx03.mydoamin.com ansible_host=192.168.56.13
+
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=xxxxxxxxxxx
+ansible_ssh_pass=xxxxxxxxxx

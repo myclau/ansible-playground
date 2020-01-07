@@ -1,0 +1,9 @@
+---
+- hosts: [knode]
+  gather_facts: no
+  tasks:
+    - name: "Install ceph plugin"
+      command: sudo modprobe rbd
+      register: response1
+    - debug:
+        var: response1.stdout

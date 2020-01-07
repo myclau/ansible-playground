@@ -1,0 +1,12 @@
+---
+- hosts: [knode]
+  gather_facts: no
+  tasks:
+    - name: "open more port"
+      command: "{{ item }}"
+      with_items:
+      - sudo sysctl -w net.ipv4.ip_local_port_range="32768 61000"
+      - sudo sed -i 's#net.ipv4.ip_local_port_range = 1025 65000#net.ipv4.ip_local_port_range = 32768 61000#g' /etc/sysctl.conf
+      register: response1
+    - debug:
+        var: response1.stdout

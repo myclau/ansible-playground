@@ -1,0 +1,14 @@
+---
+- name: Demo of Network
+  hosts: device01
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Grab running config
+      net_command:
+        commands:
+          - show run
+      register: config
+    - debug:
+        msg: "{{ config }}"
+        

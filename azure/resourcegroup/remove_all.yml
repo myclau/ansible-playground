@@ -1,0 +1,6 @@
+---
+- import_playbook: remove_vnet_peering.yml
+- import_playbook: remove_subnets.yml
+- import_playbook: remove_vnet.yml
+- import_playbook: remove_network_securitygroup.yml
+- import_playbook: remove_resourcegroup.yml

@@ -1,0 +1,12 @@
+---
+- hosts: [node]
+  gather_facts: no
+  tasks:
+    - name: "Install ceph plugin"
+      command: "{{ item }}"
+      with_items:
+      - wget -O Dynatrace-OneAgent-Linux-1.173.358.sh "https://xxxxxxxxxxx.live.dynatrace.com/api/v1/deployment/installer/agent/unix/default/latest?Api-Token=xxxxxxxxxxxxxxxxxxxxx&arch=x86&flavor=default"
+      - sudo /bin/sh Dynatrace-OneAgent-Linux-1.173.358.sh APP_LOG_CONTENT_ACCESS=1 INFRA_ONLY=0
+      register: response1
+    - debug:
+        var: response1.stdout

@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Create virtual network peering : vpc40-vpc{{vpcNumber}}"
+      azure_rm_virtualnetworkpeering:
+        resource_group: Shared-Service
+        virtual_network: vpc40-shared-service
+        name: "vpc40-vpc{{vpcNumber}}"
+        remote_virtual_network:
+          resource_group: "{{ resourceGroupName }}"
+          name: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        allow_virtual_network_access: true
+        allow_forwarded_traffic: true
+        allow_gateway_transit: true
+      register: peering1
+    - debug:
+        var: peering1
+    - name: "Create virtual network peering : vpc{{vpcNumber}}-vpc40"
+      azure_rm_virtualnetworkpeering:
+        resource_group: "{{ resourceGroupName }}"
+        virtual_network: "vpc{{vpcNumber}}-{{resourceGroupName}}"
+        name: "vpc{{vpcNumber}}-vpc40"
+        remote_virtual_network:
+          resource_group: Shared-Service
+          name: vpc40-shared-service
+        allow_virtual_network_access: true
+        allow_forwarded_traffic: true
+        use_remote_gateways: true
+      register: peering2
+    - debug:
+        var: peering2
+
+    

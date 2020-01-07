@@ -1,0 +1,6 @@
+---
+- import_playbook: create_resourcegroup.yml
+- import_playbook: create_network_securitygroup.yml
+- import_playbook: create_vnet.yml
+- import_playbook: create_subnets.yml
+- import_playbook: create_vnet_peering.yml

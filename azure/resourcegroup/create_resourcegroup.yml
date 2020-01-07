@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - ./vars/vars.yml
+  tasks:
+    - name: "Create resource group : {{ resourceGroupName }}"
+      azure_rm_resourcegroup:
+        name: "{{ resourceGroupName }}"
+        location: "{{ location }}"
+      register: rg
+    - debug:
+        var: rg
